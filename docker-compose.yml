@@ -3,7 +3,6 @@ version: '3.8'
 networks:
     app-network:
         driver: bridge
-
 volumes:
     app-data:
 
@@ -47,8 +46,7 @@ services:
             - webserver
         volumes:
             - ./:/var/www
-            - .docker/php/php.ini:/usr/local/etc/php/conf.d/local.ini
-            - .docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+            #- ./.docker/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
         networks:
             app-network:
 

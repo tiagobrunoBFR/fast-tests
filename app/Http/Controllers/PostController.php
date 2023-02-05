@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\PostNotFoundException;
+use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -25,17 +26,12 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param PostRequest $request
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        $this->validate($request, [
-            'title' =>  'required',
-            'description' => 'required',
-        ]);
-
         $request->merge(['owner_id' => auth()->id()]);
 
         $post = Post::create($request->all());
@@ -63,18 +59,13 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param PostRequest $request
      * @param int $id
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function update(Request $request, $id)
+    public function update(PostRequest $request, $id)
     {
-        $this->validate($request, [
-            'title' =>  'required',
-            'description' => 'required',
-        ]);
-
         $request->merge(['owner_id' => auth()->id()]);
 
         $post = Post::find($id);

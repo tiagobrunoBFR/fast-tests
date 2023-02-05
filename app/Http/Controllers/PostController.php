@@ -54,12 +54,25 @@ class PostController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
+     * @throws ValidationException
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'title' =>  'required',
+            'description' => 'required',
+        ]);
 
+        $request->merge(['owner_id' => auth()->id()]);
+
+        $post = Post::find($id);
+        $post->update([
+            'title' => $request->title,
+            'description' => $request->description
+        ]);
+        return response()->json(['data' => $post], 200);
     }
 
     /**

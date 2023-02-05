@@ -9,7 +9,7 @@ it('Should return post by id', function () {
     getJson(route('posts.show', $post->id))
         ->assertStatus(200)
         ->assertJson([
-            'data' => [
+            'result' => [
                 'title' => $post->title,
                 'description' => $post->description,
             ]

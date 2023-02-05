@@ -5,6 +5,7 @@ use function Pest\Laravel\deleteJson;
 
 it('Should delete post and return 204', function () {
     $post = Post::factory()->create();
+
     deleteJson(route('posts.destroy', $post->id))
         ->assertStatus(204);
 });

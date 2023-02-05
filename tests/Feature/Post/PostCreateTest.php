@@ -4,7 +4,6 @@ use function Pest\Laravel\post;
 use function Pest\Laravel\postJson;
 
 test('Should create a post', function () {
-
     $data = [
         'title' => 'test',
         'description' => 'description bla bla bla bla',
@@ -13,7 +12,7 @@ test('Should create a post', function () {
     post(route('posts.store'), $data)
         ->assertStatus(201)
         ->assertJson([
-            'data' => [
+            'result' => [
                 'title' => $data['title'],
                 'description' => $data['description'],
                 'owner_id' => $this->user->id,
@@ -22,7 +21,6 @@ test('Should create a post', function () {
 });
 
 test('Should validate data when creating post', function ($data, $errorFieldExpected) {
-
     postJson(route('posts.store'), $data)
         ->assertStatus(422)
         ->assertJsonValidationErrors($errorFieldExpected);

@@ -13,11 +13,13 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function index()
     {
-        //
+        $posts = Post::where('owner_id', auth()->id())->paginate();
+
+        return response()->json(['result' => $posts]);
     }
 
     /**
@@ -37,7 +39,7 @@ class PostController extends Controller
         $request->merge(['owner_id' => auth()->id()]);
 
         $post = Post::create($request->all());
-        return response()->json(['data' => $post], 201);
+        return response()->json(['result' => $post], 201);
     }
 
     /**
@@ -55,7 +57,7 @@ class PostController extends Controller
             throw new PostNotFoundException();
         }
 
-        return response()->json(['data' => $post]);
+        return response()->json(['result' => $post]);
     }
 
     /**
@@ -80,7 +82,7 @@ class PostController extends Controller
             'title' => $request->title,
             'description' => $request->description
         ]);
-        return response()->json(['data' => $post], 200);
+        return response()->json(['result' => $post], 200);
     }
 
     /**
@@ -100,6 +102,6 @@ class PostController extends Controller
 
         $post->delete();
 
-        return response()->json(['data' => []], 204);
+        return response()->json(['result' => []], 204);
     }
 }

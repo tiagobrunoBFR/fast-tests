@@ -43,12 +43,19 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
+     * @throws PostNotFoundException
      */
     public function show($id)
     {
-        //
+        $post = Post::find($id);
+
+        if (!$post) {
+            throw new PostNotFoundException();
+        }
+
+        return response()->json(['data' => $post]);
     }
 
     /**

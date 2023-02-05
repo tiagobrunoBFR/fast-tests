@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use App\Exceptions\PostNotFoundException;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
+use App\Service\PostService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class PostController extends Controller
 {
+    public function __construct(
+       private readonly PostService $postService
+    ){}
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +22,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::where('owner_id', auth()->id())->paginate();
+        $posts = $this->postService->index();
 
         return response()->json(['result' => $posts]);
     }
@@ -32,9 +36,7 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
-        $request->merge(['owner_id' => auth()->id()]);
-
-        $post = Post::create($request->all());
+        $post = $this->postService->create($request);
         return response()->json(['result' => $post], 201);
     }
 
@@ -47,11 +49,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Post::find($id);
-
-        if (!$post) {
-            throw new PostNotFoundException();
-        }
+        $post = $this->postService->findById($id);
 
         return response()->json(['result' => $post]);
     }
@@ -66,14 +64,9 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, $id)
     {
-        $request->merge(['owner_id' => auth()->id()]);
+        $post = $this->postService->update($request, $id);
 
-        $post = Post::find($id);
-        $post->update([
-            'title' => $request->title,
-            'description' => $request->description
-        ]);
-        return response()->json(['result' => $post], 200);
+        return response()->json(['result' => $post]);
     }
 
     /**
@@ -85,14 +78,7 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $post = Post::find($id);
-
-        if (!$post) {
-            throw new PostNotFoundException();
-        }
-
-        $post->delete();
-
+        $this->postService->delete($id);
         return response()->json(['result' => []], 204);
     }
 }

@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Service\PostService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class PostController extends Controller
 {
@@ -36,7 +37,7 @@ class PostController extends Controller
     public function store(PostRequest $request)
     {
         $post = $this->postService->create($request);
-        return response()->json(['result' => $post], 201);
+        return response()->json(['result' => $post], Response::HTTP_CREATED);
     }
 
     /**
@@ -78,6 +79,6 @@ class PostController extends Controller
     public function destroy($id)
     {
         $this->postService->delete($id);
-        return response()->json(['result' => []], 204);
+        return response()->json(['result' => []], Response::HTTP_NO_CONTENT);
     }
 }

@@ -46,7 +46,7 @@ services:
             - webserver
         volumes:
             - ./:/var/www
-            #- ./.docker/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+            - ./.docker/php/xdebug.ini/:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
         networks:
             app-network:
 

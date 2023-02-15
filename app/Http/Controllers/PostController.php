@@ -32,7 +32,6 @@ class PostController extends Controller
      *
      * @param PostRequest $request
      * @return JsonResponse
-     * @throws ValidationException
      */
     public function store(PostRequest $request)
     {

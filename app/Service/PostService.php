@@ -3,23 +3,20 @@
 namespace App\Service;
 
 use App\Exceptions\PostNotFoundException;
-use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 
 class PostService
 {
-
     public function __construct(
         private readonly Post $post
     ){}
 
-    public function create(PostRequest $request): Post
+    public function create(string $title, string $description): Post
     {
         return $this->post->create([
-            'title' => $request->title,
-            'description' => $request->description,
+            'title' => $title,
+            'description' => $description,
             'owner_id' => auth()->id()
         ]);
     }
@@ -40,13 +37,13 @@ class PostService
         return $post;
     }
 
-    public function update(PostRequest $request, int $id): Post
+    public function update(string $title, string $description, int $id): Post
     {
         $post = $this->findById($id);
 
         $post->update([
-            'title' => $request->title,
-            'description' => $request->description
+            'title' => $title,
+            'description' => $description
         ]);
 
         return $post;

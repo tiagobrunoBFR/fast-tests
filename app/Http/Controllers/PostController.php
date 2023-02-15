@@ -36,7 +36,7 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
-        $post = $this->postService->create($request);
+        $post = $this->postService->create($request->title, $request->description);
         return response()->json(['result' => $post], Response::HTTP_CREATED);
     }
 
@@ -64,7 +64,7 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, $id)
     {
-        $post = $this->postService->update($request, $id);
+        $post = $this->postService->update($request->title, $request->description, $id);
 
         return response()->json(['result' => $post]);
     }

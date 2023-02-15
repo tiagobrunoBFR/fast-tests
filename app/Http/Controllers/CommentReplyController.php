@@ -4,31 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
-use App\Models\Post;
 use App\Service\CommentService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class CommentPostController extends Controller
+class CommentReplyController extends Controller
 {
     public function __construct(
         private readonly CommentService $commentService
     ){}
 
     /**
-     * @param Request $request
-     * @param Post $post
+     * @param CommentRequest $request
+     * @param Comment $comment
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(CommentRequest $request, Post $post)
+    public function store(CommentRequest $request, Comment $comment)
     {
-        $comment = $this->commentService->create(
+        $result = $this->commentService->create(
             $request->description,
-            Post::class,
-            $post->id
+            Comment::class,
+            $comment->id
         );
 
-        return response()->json(['result' => $comment], Response::HTTP_CREATED);
+        return response()->json(['result' => $result], Response::HTTP_CREATED);
     }
 }

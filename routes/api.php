@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentPostController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,5 +16,6 @@ use Illuminate\Support\Facades\Route;
 */
 Route::middleware(['auth:sanctum'])->group(function () {
 Route::resource('posts', PostController::class);
+Route::post('posts/{post}/comments', [CommentPostController::class, 'storePostComment'])->name('posts.comments.store');
 });
 

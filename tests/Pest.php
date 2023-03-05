@@ -12,12 +12,10 @@
 */
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Laravel\Sanctum\Sanctum;
 
-uses(Tests\TestCase::class, RefreshDatabase::class)->in('Feature');
+uses(Tests\TestCase::class, DatabaseTransactions::class)->in('Feature');
 
 
 /*
